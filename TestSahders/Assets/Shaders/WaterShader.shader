@@ -44,9 +44,9 @@
 			{
 				v2f o;
 				float t = _Time * 2.0;
-				float n = noiseIQ((v.vertex.xyz + float3(0, t*2.0, t)) * 4.0);
+				float n = noiseIQ((v.vertex.xyz + float3(0, t*2.0, t)) * 2.0);
 
-				v.vertex.xyz += v.normal * n * 2.0;
+				v.vertex.xyz += v.normal * n * 8.0;
 
 				o.color.r = n;
 
