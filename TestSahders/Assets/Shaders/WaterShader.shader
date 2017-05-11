@@ -42,29 +42,11 @@
 
 			v2f vert(appdata v)
 			{
-				/*v2f o;
-				o.vertex = UnityObjectToClipPos(v.vertex);
-				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
-				o.uv *= _TileRepetition;
-
-				float time = _Time * 20.0;
-
-				v2f o2;
-				o2.uv = TRANSFORM_TEX(v.uv, _PerlinTex);
-
-				o.vertex.y += sin(time + ((o.uv.x * o.uv.y)+o.uv.y)) * 2.0;
-				
-
-				return o;*/
-
 				v2f o;
 				float t = _Time * 2.0;
 				float n = noiseIQ((v.vertex.xyz + float3(0, t*2.0, t)) * 4.0);
-				//float n = sin((v.vertex.xyz + float3(0, t*2.0, t)) * 4.0);
-				//float n = sin(v.vertex.xyz + t*2.0 * 4.0);
 
-				v.vertex.xyz += v.normal * n * 0.4;
-
+				v.vertex.xyz += v.normal * n * 2.0;
 
 				o.color.r = n;
 
@@ -73,20 +55,17 @@
 
 				o.vertex = mul(UNITY_MATRIX_MVP, v.vertex);
 				o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+				o.uv *= _TileRepetition;
 				return o;
 			}
 
 			fixed4 frag(v2f i) : SV_Target
 			{
-				/*// sample the texture
-				fixed4 col = tex2D(_MainTex, i.uv);
-				return col;*/
-
 				float2 uv = i.uv;
 				fixed4 glow = float4(1, 1, 1, 1);
 				fixed4 water = tex2D(_MainTex, uv);
 				float ratio = smoothstep(0.2, 0.8, i.color.r);
-				float light = 1 - (dot(normalize(i.viewDir), i.normal) * 1.4);
+				float light = 1 - (dot(normalize(i.viewDir), i.normal) * 5.0);
 				fixed4 col = tex2D(_MainTex, i.uv);
 				col = lerp(col, glow, light);
 				return col;

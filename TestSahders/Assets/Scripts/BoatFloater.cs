@@ -4,44 +4,13 @@ using UnityEngine;
 
 public class BoatFloater : MonoBehaviour 
 {
+    float boatHeight = 0.05f;
+    float speed = 4.0f;
 
-    private Transform seaPlane;
-    private Cloth planeCloth;
-    private int closestVertexIndex = -1;
-
-	void Start () 
+    void Update () 
     {
-        seaPlane = GameObject.Find("WaterPlane").transform;
-        planeCloth = seaPlane.GetComponent<Cloth>();
+        float newY = Mathf.Sin(Time.realtimeSinceStartup * speed) * boatHeight;
+        transform.position += new Vector3(0, newY, 0);
 	}
-	
-	void Update () 
-    {
-        GetClosestVertex();
-	}
-
-    void GetClosestVertex()
-    {
-        for (int i = 0; i < planeCloth.vertices.Length; i++)
-        {
-            if(closestVertexIndex == -1)
-            {
-                closestVertexIndex = i;
-            }
-            float distance = Vector3.Distance(planeCloth.vertices[i], transform.position);
-            float closestDistance = Vector3.Distance(planeCloth.vertices[closestVertexIndex], transform.position);
-
-            if(distance < closestDistance)
-            {
-                closestVertexIndex = i;
-            }
-        }
-
-        transform.localPosition = new Vector3(
-            transform.localPosition.x, 
-            planeCloth.vertices[closestVertexIndex].y / 5,
-            transform.localPosition.z
-        );
-
-    }
+ 
 }
